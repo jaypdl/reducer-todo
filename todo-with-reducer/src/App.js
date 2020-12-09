@@ -1,7 +1,9 @@
 import './App.css';
-import React, { useState } from 'react';
+import React, { useState, useReducer } from 'react';
 import ToDo from './components/ToDo';
 import ToDoForm from './components/ToDoForm'
+import reducer, { initialState } from './reducers';
+import { addTodos, toggleCompleted, removeCompleted } from './actions';
 
 // ToDo App
 //Display List of Current Tasks
@@ -22,56 +24,70 @@ import ToDoForm from './components/ToDoForm'
 
 
 
-const sampleTasks = [
-  {
-    name: 'Research ToDo App',
-    id: 1,
-    completed: false
-  },
-  {
-    name: 'Make ToDo App',
-    id: 2,
-    completed: false
-  },
-  {
-    name: 'Implement Reducer',
-    id: 3,
-    completed: false 
-  },
-];
+// const sampleTasks = [
+//   {
+//     name: 'Research ToDo App',
+//     id: 1,
+//     completed: false
+//   },
+//   {
+//     name: 'Make ToDo App',
+//     id: 2,
+//     completed: false
+//   },
+//   {
+//     name: 'Implement Reducer',
+//     id: 3,
+//     completed: false 
+//   },
+// ];
 
 
 function App() {
-  const [todos, setTodos] = useState(sampleTasks);
+  // const [todos, setTodos] = useState(sampleTasks);
 
-  const addTodos = newTodo => {
-    setTodos([...todos, {
-      name: newTodo,
-      id: Date.now(),
-      completed:false
-    },])
+  // const addTodos = newTodo => {
+  //   setTodos([...todos, {
+  //     name: newTodo,
+  //     id: Date.now(),
+  //     completed:false
+  //   },])
+  // }
+
+  // const toggleCompleted= todoID => {
+  //   setTodos(
+  //     todos.map(todo =>{
+  //       if (todoID === todo.id){
+  //         return ({
+  //           ...todo,
+  //           completed: !todo.completed
+  //         });
+  //       } else {
+  //         return (todo);
+  //       }
+  //     })
+  //   )
+  // }
+
+  // const removeCompleted = () => {
+  //   setTodos(
+  //     todos.filter(todo => !todo.completed)
+  //   )
+  // }
+  
+  const add = input =>{
+    dispatch(addTodos(input));
   }
 
-  const toggleCompleted= todoID => {
-    setTodos(
-      todos.map(todo =>{
-        if (todoID === todo.id){
-          return ({
-            ...todo,
-            completed: !todo.completed
-          });
-        } else {
-          return (todo);
-        }
-      })
-    )
+  const toggle = id => {
+    dispatch(toggleCompleted(id));
   }
 
-  const removeCompleted = () => {
-    setTodos(
-      todos.filter(todo => !todo.completed)
-    )
+  const clear = () =>{
+    dispatch(removeCompleted())
   }
+  const [state, dispatch] = useReducer(reducer, initialState)
+
   return (
     <div className="App">
       <header className="App-header">
@@ -80,11 +96,11 @@ function App() {
       </header>
       <section>
         <ToDo 
-          todos={todos} 
-          handleToggle={toggleCompleted}
-          removeCompleted={removeCompleted}
+          todos={state} 
+          handleToggle={toggle}
+          removeCompleted={clear}
           />
-        <ToDoForm addTodos={addTodos}/>
+        <ToDoForm addTodos={add}/>
       </section>
     </div>
   );
