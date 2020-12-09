@@ -1,9 +1,10 @@
 import React from 'react';
 
 export default function Task(props) {
+  const { handleToggle } = props;
 
   const handleClick = () => {
-    return null
+    handleToggle(props.task.id)
   }
   
   return(
