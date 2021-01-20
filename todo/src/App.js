@@ -1,23 +1,27 @@
-import logo from './logo.svg';
 import './App.css';
+import TaskList from './components/TaskList';
+import TaskForm from './components/TaskForm';
+import { useReducer } from 'react';
+import { reducer, initialState} from './reducers';
+import { addTodo, toggleComplete, clearCompleted } from './actions';
 
 function App() {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  const add = todo => {
+    dispatch(addTodo(todo));
+  }
+  const toggle = todo => {
+    dispatch(toggleComplete(todo));
+  }
+  const clear = () => {
+    dispatch(clearCompleted());
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1> WELCOME TASK MANAGERS </h1>
+      <TaskForm add={add} clear={clear}/>
+      <TaskList state={state} toggle={toggle}/>
     </div>
   );
 }

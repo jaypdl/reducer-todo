@@ -1,0 +1,7 @@
+.task {
+   margin: 5px;
+ }
+ .completed {
+   text-decoration: line-through;
+   text-transform: lowercase;
+ }
